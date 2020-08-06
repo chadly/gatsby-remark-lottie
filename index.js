@@ -9,12 +9,6 @@ const getOptions = require("./opts");
 const isLottieAnimation = node =>
 	node.type === "image" && node.url.endsWith(".json");
 
-let rootDir = path.dirname(require.main.filename);
-if (rootDir.endsWith(".cache")) {
-	rootDir = path.resolve(path.join(rootDir, ".."));
-}
-const assetPath = path.join(rootDir, "public");
-
 module.exports = async ({ markdownAST }, pluginOptions) => {
 	const nodes = [];
 	visit(markdownAST, "image", node => {
@@ -51,7 +45,7 @@ module.exports = async ({ markdownAST }, pluginOptions) => {
 async function loadSvgPreview(generatePlaceholder, url, rendererSettings) {
 	if (!generatePlaceholder) return "";
 
-	const lottiePath = path.join(assetPath, url);
+	const lottiePath = path.join("./public", url);
 	const jsonContent = await fs.readFile(lottiePath, "utf8");
 	const animationData = JSON.parse(jsonContent);
 
