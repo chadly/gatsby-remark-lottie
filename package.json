@@ -1,0 +1,37 @@
+{
+  "name": "gatsby-remark-lottie",
+  "version": "0.1.0",
+  "description": "Gatsby remark plugin to embed lottie JSON animations with SVG placeholders",
+  "keywords": [
+    "gatsby",
+    "gatsby-plugin",
+    "markdown",
+    "remark",
+    "lottie",
+    "animation",
+    "svg"
+  ],
+  "author": "Chad Lee <npm@chadly.net>",
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chadly/gatsby-remark-lottie.git"
+  },
+  "bugs": {
+    "url": "https://github.com/chadly/gatsby-remark-lottie/issues"
+  },
+  "homepage": "https://github.com/chadly/gatsby-remark-lottie#README",
+  "dependencies": {
+    "lottie-to-svg": "^0.1.1",
+    "unist-util-visit": "^2.0.3"
+  },
+  "devDependencies": {
+    "@runly/eslint-config": "^2.0.1",
+    "eslint": "^7.6.0",
+    "prettier": "^2.0.5"
+  }
+}
