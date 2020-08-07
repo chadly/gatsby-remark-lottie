@@ -9,7 +9,7 @@ const getOptions = require("./opts");
 const isLottieAnimation = node =>
 	node.type === "image" && node.url.endsWith(".json");
 
-module.exports = async ({ markdownAST }, pluginOptions) => {
+module.exports = async ({ markdownAST, cache }, pluginOptions) => {
 	const nodes = [];
 	visit(markdownAST, "image", node => {
 		if (isLottieAnimation(node)) {
@@ -28,26 +28,53 @@ module.exports = async ({ markdownAST }, pluginOptions) => {
 	for (let i = 0; i < nodes.length; i++) {
 		const node = nodes[i];
 
-		const svgPreview = await loadSvgPreview(
+		const svgPreviewUrl = await loadSvgPreview({
 			generatePlaceholders,
-			node.url,
-			rendererSettings
-		);
+			url: node.url,
+			rendererSettings,
+			cache
+		});
 
 		node.type = "html";
-		node.value = `<div class="lottie" data-animation-path="${node.url}" data-anim-type="${renderer}" data-anim-loop="${loop}" data-anim-autoplay="${autoplay}">${svgPreview}</div>`;
+		node.value = `<div class="lottie" data-animation-path="${
+			node.url
+		}" data-anim-type="${renderer}" data-anim-loop="${loop}" data-anim-autoplay="${autoplay}">
+				${
+					svgPreviewUrl
+						? `<img src="${svgPreviewUrl}" alt="${node.alt}" title="${node.title}" />`
+						: ""
+				}
+			</div>`;
 		node.children = null;
 	}
 
 	return markdownAST;
 };
 
-async function loadSvgPreview(generatePlaceholder, url, rendererSettings) {
-	if (!generatePlaceholder) return "";
+async function loadSvgPreview({
+	generatePlaceholders,
+	url,
+	rendererSettings,
+	cache
+}) {
+	if (!generatePlaceholders) return "";
 
-	const lottiePath = path.join("./public", url);
-	const jsonContent = await fs.readFile(lottiePath, "utf8");
-	const animationData = JSON.parse(jsonContent);
+	const publicPath = path.join(process.cwd(), "public");
+	const lottiePath = path.join(publicPath, url);
 
-	return await renderToSvg(animationData, rendererSettings);
+	const svgUrl = url.replace(".json", ".svg");
+	const svgPath = path.join(publicPath, svgUrl);
+
+	let result = await cache.get(svgUrl);
+
+	if (!result) {
+		const jsonContent = await fs.readFile(lottiePath, "utf8");
+		const animationData = JSON.parse(jsonContent);
+
+		result = await renderToSvg(animationData, rendererSettings);
+		cache.set(svgUrl, result);
+	}
+
+	await fs.writeFile(svgPath, result, "utf8");
+	return svgUrl;
 }
