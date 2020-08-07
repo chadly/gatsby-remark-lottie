@@ -11,9 +11,10 @@ const isLottieAnimation = node =>
 
 module.exports = async ({ markdownAST, cache }, pluginOptions) => {
 	const nodes = [];
-	visit(markdownAST, "image", node => {
+
+	visit(markdownAST, "image", (node, idx, parent) => {
 		if (isLottieAnimation(node)) {
-			nodes.push(node);
+			nodes.push({ node, parent });
 		}
 	});
 
@@ -25,8 +26,8 @@ module.exports = async ({ markdownAST, cache }, pluginOptions) => {
 		rendererSettings
 	} = getOptions(pluginOptions);
 
-	for (let i = 0; i < nodes.length; i++) {
-		const node = nodes[i];
+	for (let item of nodes) {
+		let { node, parent } = item;
 
 		const svgPreviewUrl = await loadSvgPreview({
 			generatePlaceholders,
@@ -35,13 +36,18 @@ module.exports = async ({ markdownAST, cache }, pluginOptions) => {
 			cache
 		});
 
+		const { url, alt, title } = node;
+
+		if (parent.type === "paragraph" && parent.children.length === 1) {
+			// it's a paragraph with just the image in it, replace it with our lottie div
+			node = parent;
+		}
+
 		node.type = "html";
-		node.value = `<div class="lottie" data-animation-path="${
-			node.url
-		}" data-anim-type="${renderer}" data-anim-loop="${loop}" data-anim-autoplay="${autoplay}">
+		node.value = `<div class="lottie" data-animation-path="${url}" data-anim-type="${renderer}" data-anim-loop="${loop}" data-anim-autoplay="${autoplay}">
 				${
 					svgPreviewUrl
-						? `<img src="${svgPreviewUrl}" alt="${node.alt}" title="${node.title}" />`
+						? `<img src="${svgPreviewUrl}" alt="${alt}" title="${title}" />`
 						: ""
 				}
 			</div>`;
