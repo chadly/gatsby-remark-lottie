@@ -42,7 +42,7 @@ Hi here is a cool animation:
 ![alt text](myanimation.json)
 ```
 
-This assumes a `myanimation.json` lives next to your markdown/MDX file. The image will then be rendered as an animated SVG with a static SVG placeholder for clients with scripts disabled.
+This assumes a `myanimation.json` lives next to your markdown/MDX file. The image will then be rendered as a static SVG for clients with scripts disabled and as a placeholder while the animation loads.
 
 If you need some inspiration for JSON animation files, check out [Lottie Files](https://lottiefiles.com/).
 
