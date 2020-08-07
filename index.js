@@ -26,7 +26,7 @@ module.exports = async ({ markdownAST }, pluginOptions) => {
 	} = getOptions(pluginOptions);
 
 	for (let i = 0; i < nodes.length; i++) {
-		const node = nodes[0];
+		const node = nodes[i];
 
 		const svgPreview = await loadSvgPreview(
 			generatePlaceholders,
