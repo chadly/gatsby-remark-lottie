@@ -1,6 +1,6 @@
 {
   "name": "gatsby-remark-lottie",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Gatsby remark plugin to embed lottie JSON animations with SVG placeholders",
   "keywords": [
     "gatsby",
