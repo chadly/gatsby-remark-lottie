@@ -1,4 +1,4 @@
-# Gatsby Lottie Transformer Plugin
+# Gatsby Remark Lottie Plugin
 
 > A [Gatsby](https://github.com/gatsbyjs/gatsby) remark plugin to embed [Lottie JSON animations](https://github.com/airbnb/lottie-web) with SVG placeholders in your Markdown/MDX.
 
