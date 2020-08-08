@@ -15,7 +15,7 @@ module.exports = {
   plugins:[{
     resolve: "gatsby-transformer-remark",
       options: {
-        plugins: ["gatsby-transformer-lottie"]
+        plugins: ["gatsby-remark-lottie"]
       }
   }]
 };
@@ -28,7 +28,7 @@ module.exports = {
   plugins:[{
     resolve: "gatsby-plugin-mdx",
       options: {
-        gatsbyRemarkPlugins: ["gatsby-transformer-lottie"]
+        gatsbyRemarkPlugins: ["gatsby-remark-lottie"]
       }
   }]
 };
