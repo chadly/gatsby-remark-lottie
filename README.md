@@ -2,6 +2,8 @@
 
 > A [Gatsby](https://github.com/gatsbyjs/gatsby) remark plugin to embed [Lottie JSON animations](https://github.com/airbnb/lottie-web) with SVG placeholders in your Markdown/MDX.
 
+Read more about the [motivation behind this plugin and a live demo](https://www.chadly.net/web-animation/).
+
 ## Usage
 
 ```
